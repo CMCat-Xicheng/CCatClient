@@ -20,7 +20,7 @@ class ConnectCommand : Command("连接", emptyArray()) {
      * Execute commands with provided [args]
      */
     override fun execute(args: Array<String>) {
-        if (args.size == 3 && args[2].equals("silent")) {
+        if (args.size == 3 && args[2].equals("无缝")) {
             chat("正在连接到 §f${args[1]} §7(无缝模式)")
             mc.displayGuiScreen(GuiConnecting(GuiMultiplayer(GuiMainMenu()), mc, ServerData("", args[1], false)))
         } else if (args.size == 2) {
