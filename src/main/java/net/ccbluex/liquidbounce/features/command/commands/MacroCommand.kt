@@ -12,7 +12,7 @@ import net.ccbluex.liquidbounce.utils.ClientUtils
 import net.ccbluex.liquidbounce.utils.misc.StringUtils
 import org.lwjgl.input.Keyboard
 
-class MacroCommand : Command("macro", emptyArray()) {
+class MacroCommand : Command("宏", emptyArray()) {
     /**
      * Execute commands with provided [args]
      */
@@ -20,14 +20,14 @@ class MacroCommand : Command("macro", emptyArray()) {
         if (args.size > 2) {
             val key = Keyboard.getKeyIndex(args[2].toUpperCase())
             if (key == 0) {
-                chat("§c§lKeybind doesn't exist, or not allowed.")
-                chatSyntax("macro <list/clear/add/remove>")
+                chat("§c不存在或不被允许的键盘绑定.")
+                chatSyntax("宏 <列表/清空/添加/删除>")
                 return
             }
             when (args[1].toLowerCase()) {
-                "add" -> {
+                "添加" -> {
                     if (args.size < 4) {
-                        chatSyntax("macro add <key name> <message>")
+                        chatSyntax("宏 添加 <按键> <消息>")
                         return
                     }
                     val message = StringUtils.toCompleteString(args, 3)
@@ -35,9 +35,9 @@ class MacroCommand : Command("macro", emptyArray()) {
                     MacroManager.addMacro(key, message)
                     LiquidBounce.fileManager.saveConfig(LiquidBounce.fileManager.valuesConfig)
                     if (existed)
-                        chat("§a§lSuccessfully changed macro in key §7${Keyboard.getKeyName(key)} to §r$message.")
+                        chat("§7成功更改位于 §f${Keyboard.getKeyName(key)} §7的宏为 §f$message§7.")
                     else
-                        chat("§a§lSuccessfully added §r$message §a§lto key §7${Keyboard.getKeyName(key)}.")
+                        chat("§7成功将 §f$message §7绑定至 §f${Keyboard.getKeyName(key)}§7.")
                     playEdit()
                     return
                 }
@@ -46,12 +46,12 @@ class MacroCommand : Command("macro", emptyArray()) {
                         val lastMessage = MacroManager.macroMapping[key]
                         MacroManager.removeMacro(key)
                         LiquidBounce.fileManager.saveConfig(LiquidBounce.fileManager.valuesConfig)
-                        chat("§a§lSuccessfully removed the macro §r$lastMessage §a§lfrom §7${Keyboard.getKeyName(key)}.")
+                        chat("§7成功删除了位于 §f${Keyboard.getKeyName(key)} §7的宏.")
                         playEdit()
                         return
                     }
-                    chat("§c§lThere's no macro bound to this key.")
-                    chatSyntax("macro remove <key name>")
+                    chat("§c没有宏绑定在这个按键上.")
+                    chatSyntax("宏 删除 <按键>")
                     return
                 }
             }
@@ -59,9 +59,9 @@ class MacroCommand : Command("macro", emptyArray()) {
         if (args.size == 2) {
             when (args[1].toLowerCase()) {
                 "list" -> {
-                    chat("§6§lMacros:")
+                    chat("§7宏:")
                     MacroManager.macroMapping.forEach {
-                        ClientUtils.displayChatMessage("§6> §c${Keyboard.getKeyName(it.key)}: §r${it.value}")
+                        ClientUtils.displayChatMessage("§7> §f${Keyboard.getKeyName(it.key)}: §f${it.value}")
                     }
                     return
                 }
@@ -69,28 +69,28 @@ class MacroCommand : Command("macro", emptyArray()) {
                     MacroManager.macroMapping.clear()
                     playEdit()
                     LiquidBounce.fileManager.saveConfig(LiquidBounce.fileManager.valuesConfig)
-                    chat("§a§lSuccessfully cleared macro list.")
+                    chat("§7成功清除了宏列表.")
                     return
                 }
                 "add" -> {
-                    chatSyntax("macro add <key name> <message>")
+                    chatSyntax("宏 添加 <按键> <消息>")
                     return
                 }
                 "remove" -> {
-                    chatSyntax("macro remove <key name>")
+                    chatSyntax("宏 删除 <按键>")
                     return
                 }
             }
         }
 
-        chatSyntax("macro <list/clear/add/remove>")
+        chatSyntax("宏 <列表/清空/添加/删除>")
     }
 
     override fun tabComplete(args: Array<String>): List<String> {
         if (args.isEmpty()) return emptyList()
 
         return when (args.size) {
-            1 -> listOf("add", "remove", "list", "clear")
+            1 -> listOf("添加", "删除", "列表", "清空")
                 .filter { it.startsWith(args[0], true) }
             else -> emptyList()
         }
