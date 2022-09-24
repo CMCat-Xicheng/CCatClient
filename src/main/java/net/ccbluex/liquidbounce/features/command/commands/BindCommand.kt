@@ -28,7 +28,7 @@ class BindCommand : Command("绑定", emptyArray()) {
 
             // Response to user
             chat("已将ClickGui绑定至${Keyboard.getKeyName(key)}.")
-            LiquidBounce.hud.addNotification(Notification("已将ClickGui绑定至${Keyboard.getKeyName(key)}", Notification.Type.SUCCESS))
+            LiquidBounce.hud.addNotification(Notification("已将界面绑定至 ${Keyboard.getKeyName(key)}", Notification.Type.SUCCESS))
             playEdit()
             return
         }
