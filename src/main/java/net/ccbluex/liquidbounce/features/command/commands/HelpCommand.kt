@@ -1,8 +1,4 @@
-/*
- * LiquidBounce+ Hacked Client
- * A free open source mixin-based injection hacked client for Minecraft using Minecraft Forge.
- * https://github.com/WYSI-Foundation/LiquidBouncePlus/
- */
+
 package net.ccbluex.liquidbounce.features.command.commands
 
 import joptsimple.internal.Strings
@@ -10,7 +6,7 @@ import net.ccbluex.liquidbounce.LiquidBounce
 import net.ccbluex.liquidbounce.features.command.Command
 import net.ccbluex.liquidbounce.utils.ClientUtils
 
-class HelpCommand : Command("help", emptyArray()) {
+class HelpCommand : Command("帮助", emptyArray()) {
     /**
      * Execute commands with provided [args]
      */
@@ -27,7 +23,7 @@ class HelpCommand : Command("help", emptyArray()) {
         }
 
         if (page <= 0) {
-            chat("The number you have entered is too low, it must be over 0")
+            chat("页数必须高于 0.")
             return
         }
 
@@ -38,12 +34,12 @@ class HelpCommand : Command("help", emptyArray()) {
             maxPageDouble.toInt()
 
         if (page > maxPage) {
-            chat("The number you have entered is too big, it must be under $maxPage.")
+            chat("页数必须不大于 $maxPage.")
             return
         }
 
-        chat("§c§lHelp")
-        ClientUtils.displayChatMessage("§7> Page: §8$page / $maxPage")
+        chat("§c§l帮助")
+        ClientUtils.displayChatMessage("§7>  §8$page / $maxPage")
 
         val commands = LiquidBounce.commandManager.commands.sortedBy { it.command }
 
@@ -51,10 +47,10 @@ class HelpCommand : Command("help", emptyArray()) {
         while (i < 8 * page && i < commands.size) {
             val command = commands[i]
 
-            ClientUtils.displayChatMessage("§6> §7${LiquidBounce.commandManager.prefix}${command.command}${if (command.alias.isEmpty()) "" else " §7(§8" + Strings.join(command.alias, "§7, §8") + "§7)"}")
+            ClientUtils.displayChatMessage("§6> §7${command.command}${if (command.alias.isEmpty()) "" else " §7(§8" + Strings.join(command.alias, "§7, §8") + "§7)"}")
             i++
         }
 
-        ClientUtils.displayChatMessage("§a------------\n§7> §c${LiquidBounce.commandManager.prefix}help §8<§7§lpage§8>")
+        ClientUtils.displayChatMessage("§a------------\n§7> 帮助 §8<§7§lpage§8>")
     }
 }
