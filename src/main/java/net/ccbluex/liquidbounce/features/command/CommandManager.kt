@@ -1,8 +1,4 @@
-/*
- * LiquidBounce+ Hacked Client
- * A free open source mixin-based injection hacked client for Minecraft using Minecraft Forge.
- * https://github.com/WYSI-Foundation/LiquidBouncePlus/
- */
+
 package net.ccbluex.liquidbounce.features.command
 
 import net.ccbluex.liquidbounce.LiquidBounce
@@ -16,7 +12,7 @@ class CommandManager {
     val commands = mutableListOf<Command>()
     var latestAutoComplete: Array<String> = emptyArray()
 
-    public var prefix = '.'
+    public var prefix = '`'
 
     /**
      * Register all default commands
@@ -27,37 +23,22 @@ class CommandManager {
         registerCommand(HClipCommand())
         registerCommand(HelpCommand())
         registerCommand(SayCommand())
-        registerCommand(MacroCommand())
         registerCommand(ShortcutCommand())
-        registerCommand(FriendCommand())
-        registerCommand(AutoSettingsCommand())
-        registerCommand(LocalAutoSettingsCommand())
         registerCommand(ServerInfoCommand())
         registerCommand(ToggleCommand())
         registerCommand(TargetCommand())
         registerCommand(TacoCommand())
         registerCommand(BindsCommand())
         registerCommand(PanicCommand())
-        registerCommand(PingCommand())
         registerCommand(ReloadCommand())
-        registerCommand(ScriptManagerCommand())
-        registerCommand(PrefixCommand())
         registerCommand(HideCommand())
-        registerCommand(AutoDisableCommand())
-        registerCommand(TeleportCommand())
         registerCommand(PathfindingTeleportCommand())
-        registerCommand(ThemeCommand())
         registerCommand(LocalThemeCommand())
         registerCommand(ConnectCommand())
         registerCommand(UUIDCommand())
-        registerCommand(EnchantCommand())
-        registerCommand(GiveCommand())
-        registerCommand(HoloStandCommand())
         registerCommand(HurtCommand())
         registerCommand(RemoteViewCommand())
-        registerCommand(RenameCommand())
         registerCommand(UsernameCommand())
-        registerCommand(XrayCommand())
     }
 
     /**
@@ -150,14 +131,14 @@ class CommandManager {
     fun registerShortcut(name: String, script: String) {
         if (getCommand(name) == null) {
             registerCommand(Shortcut(name, ShortcutParser.parse(script).map {
-                val command = getCommand(it[0]) ?: throw IllegalArgumentException("Command ${it[0]} not found!")
+                val command = getCommand(it[0]) ?: throw IllegalArgumentException("未找到 ${it[0]} 命令!")
 
                 Pair(command, it.toTypedArray())
             }))
 
             LiquidBounce.fileManager.saveConfig(LiquidBounce.fileManager.shortcutsConfig)
         } else {
-            throw IllegalArgumentException("Command already exists!")
+            throw IllegalArgumentException("命令已存在!")
         }
     }
 
