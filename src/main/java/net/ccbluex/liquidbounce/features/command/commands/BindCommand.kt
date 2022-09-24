@@ -10,31 +10,30 @@ import net.ccbluex.liquidbounce.features.command.Command
 import net.ccbluex.liquidbounce.ui.client.hud.element.elements.Notification
 import org.lwjgl.input.Keyboard
 
-class BindCommand : Command("bind", emptyArray()) {
+class BindCommand : Command("绑定", emptyArray()) {
     /**
      * Execute commands with provided [args]
      */
     override fun execute(args: Array<String>) {
         if (args.size > 2) {
             // Get module by name
-            val module = LiquidBounce.moduleManager.getModule(args[1])
+            val module = LiquidBounce.moduleManager.getModule("ClickGui")
 
-            if (module == null) {
-                chat("Module §a§l" + args[1] + "§3 not found.")
+            if (module == null) 
                 return
             }
             // Find key by name and change
-            val key = Keyboard.getKeyIndex(args[2].toUpperCase())
+            val key = Keyboard.getKeyIndex(args[1].toUpperCase())
             module.keyBind = key
 
             // Response to user
-            chat("Bound module §a§l${module.name}§3 to key §a§l${Keyboard.getKeyName(key)}§3.")
-            LiquidBounce.hud.addNotification(Notification("Bound ${module.name} to ${Keyboard.getKeyName(key)}", Notification.Type.SUCCESS))
+            chat("已将ClickGui绑定至${Keyboard.getKeyName(key)}.")
+            LiquidBounce.hud.addNotification(Notification("已将ClickGui绑定至${Keyboard.getKeyName(key)}", Notification.Type.SUCCESS))
             playEdit()
             return
         }
 
-        chatSyntax(arrayOf("<module> <key>", "<module> none"))
+        chatSyntax(arrayOf("<按键>", "none"))
     }
 
     override fun tabComplete(args: Array<String>): List<String> {
