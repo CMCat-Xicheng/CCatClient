@@ -30,10 +30,6 @@ import kotlin.concurrent.thread
 
 class GuiMainMenu : GuiScreen(), GuiYesNoCallback {
 
-    val bigLogo = ResourceLocation("liquidbounce+/big.png")
-    val darkIcon = ResourceLocation("liquidbounce+/menu/dark.png")
-    val lightIcon = ResourceLocation("liquidbounce+/menu/light.png")
-
     var slideX : Float = 0F
     var fade : Float = 0F
 
@@ -49,7 +45,7 @@ class GuiMainMenu : GuiScreen(), GuiYesNoCallback {
     var extendedBackgroundMode = false
 
     companion object {
-        var useParallax = true
+        var useParallax = false
     }
 
     override fun initGui() {
@@ -68,13 +64,10 @@ class GuiMainMenu : GuiScreen(), GuiYesNoCallback {
         val creditInfo = "Copyright Mojang AB. Do not distribute!"
         drawBackground(0)
         GL11.glPushMatrix()
-        renderSwitchButton()
-        renderDarkModeButton()
-        Fonts.font40.drawStringWithShadow("LiquidBounce++ b${LiquidBounce.CLIENT_VERSION} | lbplusplus.ga", 2F, height - 12F, -1)
+        Fonts.font40.drawStringWithShadow("CCatClient", 2F, height - 12F, -1)
         Fonts.font40.drawStringWithShadow(creditInfo, width - 3F - Fonts.font40.getStringWidth(creditInfo), height - 12F, -1)
         if (useParallax) moveMouseEffect(mouseX, mouseY, 10F)
         GlStateManager.disableAlpha()
-        RenderUtils.drawImage2(bigLogo, width / 2F - 50F, height / 2F - 90F, 100, 100)
         GlStateManager.enableAlpha()
         renderBar(mouseX, mouseY, partialTicks)
         GL11.glPopMatrix()
@@ -90,12 +83,6 @@ class GuiMainMenu : GuiScreen(), GuiYesNoCallback {
 
     override fun mouseClicked(mouseX: Int, mouseY: Int, mouseButton: Int) {
         if (!LiquidBounce.mainMenuPrep || mouseButton != 0) return
-
-        if (isMouseHover(2F, height - 26F, 28F, height - 16F, mouseX, mouseY))
-            useParallax = !useParallax
-
-        if (isMouseHover(2F, height - 38F, 28F, height - 28F, mouseX, mouseY))
-            LiquidBounce.darkMode = !LiquidBounce.darkMode
 
         val staticX = width / 2F - 120F
         val staticY = height / 2F + 20F
@@ -121,28 +108,7 @@ class GuiMainMenu : GuiScreen(), GuiYesNoCallback {
                             MiscUtils.showErrorPopup("Error", "Exception class: " + e.javaClass.name + "\nMessage: " + e.message)
                             LiquidBounce.fileManager.backgroundFile.delete()
                         }
-                    } else if (extendedModMode) {
-                            val rpc = LiquidBounce.clientRichPresence
-                            rpc.showRichPresenceValue = when (val state = !rpc.showRichPresenceValue) {
-                                false -> {
-                                    rpc.shutdown()
-                                    false
-                                }
-                                true -> {
-                                    var value = true
-                                    thread {
-                                        value = try {
-                                            rpc.setup()
-                                            true
-                                        } catch (throwable: Throwable) {
-                                            ClientUtils.getLogger().error("Failed to setup Discord RPC.", throwable)
-                                            false
-                                        }
-                                    }
-                                    value
-                                }
-                            }
-                        } else mc.displayGuiScreen(GuiOptions(this, this.mc.gameSettings))
+                    }else mc.displayGuiScreen(GuiOptions(this, this.mc.gameSettings))
                     4 -> if (extendedBackgroundMode) {
                         LiquidBounce.background = null
                         LiquidBounce.fileManager.backgroundFile.delete()
@@ -163,23 +129,6 @@ class GuiMainMenu : GuiScreen(), GuiYesNoCallback {
         val yDelta = mY.toFloat() / (height / 2).toFloat()
         
         GL11.glTranslatef(xDelta * strength, yDelta * strength, 0F)
-    }
-
-    fun renderSwitchButton() {
-        sliderX = (sliderX + (if (useParallax) 2F else -2F)).coerceIn(0F, 12F)
-        Fonts.font40.drawStringWithShadow("Parallax", 28F, height - 25F, -1)
-        RenderUtils.drawRoundedRect(4F, height - 24F, 22F, height - 18F, 3F, if (useParallax) Color(0, 111, 255, 255).rgb else (if (LiquidBounce.darkMode) Color(70, 70, 70, 255) else Color(140, 140, 140, 255)).rgb)
-        RenderUtils.drawRoundedRect(2F + sliderX, height - 26F, 12F + sliderX, height - 16F, 5F, Color.white.rgb)
-    }
-
-    fun renderDarkModeButton() {
-        sliderDarkX = (sliderDarkX + (if (LiquidBounce.darkMode) 2F else -2F)).coerceIn(0F, 12F)
-        GlStateManager.disableAlpha()
-        RenderUtils.drawImage3(darkIcon, 28F, height - 40F, 14, 14, 1F, 1F, 1F, sliderDarkX / 12F)
-        RenderUtils.drawImage3(lightIcon, 28F, height - 40F, 14, 14, 1F, 1F, 1F, 1F - (sliderDarkX / 12F))
-        GlStateManager.enableAlpha()
-        RenderUtils.drawRoundedRect(4F, height - 36F, 22F, height - 30F, 3F, (if (LiquidBounce.darkMode) Color(70, 70, 70, 255) else Color(140, 140, 140, 255)).rgb)
-        RenderUtils.drawRoundedRect(2F + sliderDarkX, height - 38F, 12F + sliderDarkX, height - 28F, 5F, Color.white.rgb)
     }
 
     fun renderBar(mouseX: Int, mouseY: Int, partialTicks: Float) {
@@ -207,15 +156,6 @@ class GuiMainMenu : GuiScreen(), GuiYesNoCallback {
                     }
                     index++
                 }
-            else
-                for (icon in ExtendedImageButton.values()) {
-                    if (isMouseHover(staticX + 40F * index, staticY, staticX + 40F * (index + 1), staticY + 20F, mouseX, mouseY)) {
-                        shouldAnimate = true
-                        displayString = if (icon == ExtendedImageButton.DiscordRPC) "${icon.buttonName}: ${if (LiquidBounce.clientRichPresence.showRichPresenceValue) "§aON" else "§cOFF"}" else icon.buttonName
-                        moveX = staticX + 40F * index
-                    }
-                    index++
-                }
         } else
             for (icon in ImageButton.values()) {
                 if (isMouseHover(staticX + 40F * index, staticY, staticX + 40F * (index + 1), staticY + 20F, mouseX, mouseY)) {
@@ -229,7 +169,7 @@ class GuiMainMenu : GuiScreen(), GuiYesNoCallback {
         if (displayString != null)
             Fonts.font35.drawCenteredString(displayString!!, width / 2F, staticY + 30F, -1)
         else
-            Fonts.font35.drawCenteredString("Hello!, ${mc.session.username}", width / 2F, staticY + 30F, -1)
+            Fonts.font35.drawCenteredString("§b[§fCCat§b] §l${mc.session.username}", width / 2F, staticY + 30F, -1)
 
         if (shouldAnimate) {
             if (fade == 0F)
@@ -256,25 +196,16 @@ class GuiMainMenu : GuiScreen(), GuiYesNoCallback {
         if (extendedModMode) {
             if (extendedBackgroundMode)
                 for (i in ExtendedBackgroundButton.values()) {
-                    if (LiquidBounce.darkMode)
-                        RenderUtils.drawImage2(i.texture, staticX + 40F * index + 11F, staticY + 1F, 18, 18)
-                    else
                         RenderUtils.drawImage3(i.texture, staticX + 40F * index + 11F, staticY + 1F, 18, 18, 0F, 0F, 0F, 1F)
                     index++
                 }
             else
                 for (i in ExtendedImageButton.values()) {
-                    if (LiquidBounce.darkMode)
-                        RenderUtils.drawImage2(i.texture, staticX + 40F * index + 11F, staticY + 1F, 18, 18)
-                    else
                         RenderUtils.drawImage3(i.texture, staticX + 40F * index + 11F, staticY + 1F, 18, 18, 0F, 0F, 0F, 1F)
                     index++
                 }
         } else
             for (i in ImageButton.values()) {
-                if (LiquidBounce.darkMode)
-                    RenderUtils.drawImage2(i.texture, staticX + 40F * index + 11F, staticY + 1F, 18, 18)
-                else
                     RenderUtils.drawImage3(i.texture, staticX + 40F * index + 11F, staticY + 1F, 18, 18, 0F, 0F, 0F, 1F)
                 index++
             }
@@ -296,7 +227,6 @@ class GuiMainMenu : GuiScreen(), GuiYesNoCallback {
         Back("Back", ResourceLocation("liquidbounce+/clickgui/back.png")),
         Mods("Mods", ResourceLocation("liquidbounce+/menu/mods.png")),
         Scripts("Scripts", ResourceLocation("liquidbounce+/clickgui/docs.png")),
-        DiscordRPC("Discord RPC", ResourceLocation("liquidbounce+/menu/discord.png")),
         Background("Background", ResourceLocation("liquidbounce+/menu/wallpaper.png")),
         Exit("Exit", ResourceLocation("liquidbounce+/menu/exit.png"))
     }
