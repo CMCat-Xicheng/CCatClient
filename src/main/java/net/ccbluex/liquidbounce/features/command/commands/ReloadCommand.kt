@@ -13,13 +13,13 @@ import net.ccbluex.liquidbounce.ui.client.clickgui.newVer.NewUi
 import net.ccbluex.liquidbounce.ui.font.Fonts
 import net.ccbluex.liquidbounce.utils.misc.sound.TipSoundManager
 
-class ReloadCommand : Command("reload", arrayOf("configreload")) {
+class ReloadCommand : Command("重载", arrayOf("reload")) {
     /**
      * Execute commands with provided [args]
      */
     override fun execute(args: Array<String>) {
-        chat("Reloading...")
-        chat("§c§lReloading commands...")
+        chat("重载中")
+        chat("§7重载命令...")
         LiquidBounce.commandManager = CommandManager()
         LiquidBounce.commandManager.registerCommands()
         LiquidBounce.isStarting = true
@@ -27,32 +27,20 @@ class ReloadCommand : Command("reload", arrayOf("configreload")) {
         LiquidBounce.scriptManager.unloadScripts()
         for(module in LiquidBounce.moduleManager.modules)
             LiquidBounce.moduleManager.generateCommand(module)
-        chat("§c§lReloading scripts...")
+        chat("§7重载脚本...")
         LiquidBounce.scriptManager.loadScripts()
         LiquidBounce.scriptManager.enableScripts()
-        chat("§c§lReloading fonts...")
+        chat("§7重载字体...")
         Fonts.loadFonts()
-        chat("§c§lReloading toggle audio files...")
-        LiquidBounce.tipSoundManager = TipSoundManager()
-        chat("§c§lReloading modules...")
+        chat("§7重载模块...")
         LiquidBounce.fileManager.loadConfig(LiquidBounce.fileManager.modulesConfig)
         LiquidBounce.isStarting = false
-        chat("§c§lReloading values...")
+        chat("§7重载值...")
         LiquidBounce.fileManager.loadConfig(LiquidBounce.fileManager.valuesConfig)
-        chat("§c§lReloading accounts...")
+        chat("§7重载账户...")
         LiquidBounce.fileManager.loadConfig(LiquidBounce.fileManager.accountsConfig)
-        chat("§c§lReloading friends...")
-        LiquidBounce.fileManager.loadConfig(LiquidBounce.fileManager.friendsConfig)
-        chat("§c§lReloading xray...")
-        LiquidBounce.fileManager.loadConfig(LiquidBounce.fileManager.xrayConfig)
-        chat("§c§lReloading HUD...")
+        chat("§7重载HUD...")
         LiquidBounce.fileManager.loadConfig(LiquidBounce.fileManager.hudConfig)
-        chat("§c§lReloading ClickGUI...")
-        LiquidBounce.clickGui = ClickGui()
-        LiquidBounce.fileManager.loadConfig(LiquidBounce.fileManager.clickGuiConfig)
-        chat("§c§lReloading NewGUI...")
-        NewUi.resetInstance()
-        LiquidBounce.isStarting = false
-        chat("Reloaded.")
+        chat("已重载")
     }
 }
