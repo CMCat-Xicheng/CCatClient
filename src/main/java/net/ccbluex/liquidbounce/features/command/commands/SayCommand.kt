@@ -8,16 +8,16 @@ package net.ccbluex.liquidbounce.features.command.commands
 import net.ccbluex.liquidbounce.features.command.Command
 import net.ccbluex.liquidbounce.utils.misc.StringUtils
 
-class SayCommand : Command("say", emptyArray()) {
+class SayCommand : Command("聊天", emptyArray()) {
     /**
      * Execute commands with provided [args]
      */
     override fun execute(args: Array<String>) {
         if (args.size > 1) {
             mc.thePlayer.sendChatMessage(StringUtils.toCompleteString(args, 1))
-            chat("Message was sent to the chat.")
+            chat("消息已发送.")
             return
         }
-        chatSyntax("say <message...>")
+        chatSyntax("聊天 <消息>")
     }
 }
