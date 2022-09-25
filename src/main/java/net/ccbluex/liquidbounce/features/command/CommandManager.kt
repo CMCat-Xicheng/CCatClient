@@ -19,25 +19,13 @@ class CommandManager {
      */
     fun registerCommands() {
         registerCommand(BindCommand())
-        registerCommand(VClipCommand())
-        registerCommand(HClipCommand())
         registerCommand(HelpCommand())
         registerCommand(SayCommand())
-        registerCommand(ShortcutCommand())
         registerCommand(ServerInfoCommand())
         registerCommand(ToggleCommand())
         registerCommand(TargetCommand())
-        registerCommand(TacoCommand())
-        registerCommand(BindsCommand())
-        registerCommand(PanicCommand())
         registerCommand(ReloadCommand())
-        registerCommand(HideCommand())
-        registerCommand(PathfindingTeleportCommand())
-        registerCommand(LocalThemeCommand())
         registerCommand(ConnectCommand())
-        registerCommand(UUIDCommand())
-        registerCommand(HurtCommand())
-        registerCommand(RemoteViewCommand())
         registerCommand(UsernameCommand())
     }
 
@@ -62,7 +50,7 @@ class CommandManager {
             }
         }
 
-        ClientUtils.displayChatMessage("§cCommand not found. Type ${prefix}help to view all commands.")
+        ClientUtils.displayChatMessage("§fUnknown command. Type ${prefix}help for help.")
     }
 
     /**
