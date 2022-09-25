@@ -8,7 +8,7 @@ package net.ccbluex.liquidbounce.features.command.commands
 import net.ccbluex.liquidbounce.LiquidBounce
 import net.ccbluex.liquidbounce.features.command.Command
 
-class ToggleCommand : Command("toggle", arrayOf("t")) {
+class ToggleCommand : Command("控制", arrayOf("t")) {
     /**
      * Execute commands with provided [args]
      */
@@ -17,7 +17,7 @@ class ToggleCommand : Command("toggle", arrayOf("t")) {
             val module = LiquidBounce.moduleManager.getModule(args[1])
 
             if (module == null) {
-                chat("Module '${args[1]}' not found.")
+                chat("未找到 '${args[1]}'.")
                 return
             }
 
@@ -27,18 +27,18 @@ class ToggleCommand : Command("toggle", arrayOf("t")) {
                 if (newState == "on" || newState == "off") {
                     module.state = newState == "on"
                 } else {
-                    chatSyntax("toggle <module> [on/off]")
+                    chatSyntax("控制 <模块> [on/off]")
                     return
                 }
             } else {
                 module.toggle()
             }
 
-            chat("${if (module.state) "Enabled" else "Disabled"} module §8${module.name}§3.")
+            chat(" 模块 §f${module.name}§7 已设置为 ${if (module.state) "开启状态" else "关闭状态"}.")
             return
         }
 
-        chatSyntax("toggle <module> [on/off]")
+        chatSyntax("控制 <模块> [on/off]")
     }
 
     override fun tabComplete(args: Array<String>): List<String> {
