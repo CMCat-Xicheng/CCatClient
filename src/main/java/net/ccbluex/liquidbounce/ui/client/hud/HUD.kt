@@ -28,19 +28,15 @@ open class HUD : MinecraftInstance() {
 
         val elements = arrayOf(
                 Armor::class.java,
-                Arraylist::class.java,
                 Effects::class.java,
                 Image::class.java,
-                Model::class.java,
                 Notifications::class.java,
                 TabGUI::class.java,
                 Text::class.java,
                 ScoreboardElement::class.java,
-                Target::class.java,
                 Inventory::class.java,
                 SpeedGraph::class.java,
                 PlayerList::class.java,
-                Radar::class.java,
                 Graph::class.java,
                 Statistics::class.java
         )
@@ -50,8 +46,6 @@ open class HUD : MinecraftInstance() {
          */
         @JvmStatic
         fun createDefault() = HUD()
-                .addElement(Text.defaultClient())
-                .addElement(Arraylist())
                 .addElement(ScoreboardElement())
                 .addElement(Armor())
                 .addElement(Effects())
