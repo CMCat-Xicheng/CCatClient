@@ -25,20 +25,20 @@ class ServerInfoCommand : Command("serverinfo", emptyArray()), Listenable {
      */
     override fun execute(args: Array<String>) {
         if (mc.currentServerData == null) {
-            chat("This command does not work in single player.")
+            chat("此命令无法在 单人游戏 中使用.")
             return
         }
 
         val data = mc.currentServerData
 
-        chat("Server infos:")
-        chat("§7Name: §8${data.serverName}")
+        chat("服务器信息:")
+        chat("§7名字: §8${data.serverName}")
         chat("§7IP: §8$ip:$port")
-        chat("§7Players: §8${data.populationInfo}")
+        chat("§7玩家: §8${data.populationInfo}")
         chat("§7MOTD: §8${data.serverMOTD}")
-        chat("§7ServerVersion: §8${data.gameVersion}")
-        chat("§7ProtocolVersion: §8${data.version}")
-        chat("§7Ping: §8${data.pingToServer}")
+        chat("§7服务器版本: §8${data.gameVersion}")
+        chat("§7Protocol版本: §8${data.version}")
+        chat("§7延迟: §8${data.pingToServer}")
     }
 
     @EventTarget
